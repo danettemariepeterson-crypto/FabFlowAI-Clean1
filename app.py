@@ -26,12 +26,14 @@ class DigitalProduct(FPDF):
 
 # --- OpenAI client (safe) ---
 client = OpenAI(api_key=st.secrets["openai"]["api_key"])
+def clean_text(text):
+    return text.encode('latin-1', 'replace').decode('latin-1')
 
 st.title("✨ FabFlow AI Safe App")
 st.write("Your API key is safely loaded via st.secrets.")
 
 # Example usage
-chapter_title = "Introduction – Own Your Power"
+chapter_title = "Introduction - Own Your Power"
 chapter_content = "This is a sample chapter generated safely."
 
 pdf = DigitalProduct()
@@ -68,6 +70,14 @@ class DigitalProduct(FPDF):
         except Exception as e:
             st.error(f"Error adding chapter '{title}': {e}")
             st.error(f"Preview: {content[:100]}...")
+  def add_chapter(self, title, content):
+    self.add_page()
+    
+    self.set_font("Helvetica", "B", 22)
+    self.cell(0, 20, clean_text(title), 0, 1, "L")
+    
+    self.set_font("Helvetica", "", 12)
+    self.multi_cell(0, 10, clean_text(content))
 
 # --- 2. LICENSE CHECK ---
 st.set_page_config(page_title="FabFlow AI | Member Access", page_icon="✨", layout="wide")
