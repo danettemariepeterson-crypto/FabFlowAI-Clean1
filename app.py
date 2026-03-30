@@ -3,6 +3,8 @@
 import streamlit as st
 import requests
 from openai import OpenAI
+
+
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 from fpdf import FPDF
 import io
