@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 .streamlit
 
+=======
+.streamlit/secrets.toml
+>>>>>>> d3654c9a667748ff16385480fc7a1847fa48c5d1
