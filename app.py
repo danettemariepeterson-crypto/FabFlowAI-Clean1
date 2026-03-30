@@ -1,16 +1,52 @@
 
 
 import streamlit as st
-import requests
 from openai import OpenAI
-<<<<<<< HEAD
-=======
-
-
->>>>>>> d3654c9a667748ff16385480fc7a1847fa48c5d1
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 from fpdf import FPDF
 import io
+
+# --- PDF Class ---
+class DigitalProduct(FPDF):
+    def __init__(self):
+        super().__init__()
+        self.set_auto_page_break(auto=True, margin=15)
+        
+    def add_chapter(self, title, content):
+        self.add_page()
+        # Gold header
+        self.set_font("Helvetica", "B", 22)
+        self.set_text_color(184, 134, 11)
+        self.cell(0, 20, title, 0, 1, "L")
+        self.ln(5)
+        
+        # Body text
+        self.set_font("Helvetica", "", 12)
+        self.set_text_color(51, 51, 51)
+        self.multi_cell(0, 10, content)
+
+# --- OpenAI client (safe) ---
+client = OpenAI(api_key=st.secrets["openai"]["api_key"])
+
+st.title("✨ FabFlow AI Safe App")
+st.write("Your API key is safely loaded via st.secrets.")
+
+# Example usage
+chapter_title = "Introduction – Own Your Power"
+chapter_content = "This is a sample chapter generated safely."
+
+pdf = DigitalProduct()
+pdf.add_chapter(chapter_title, chapter_content)
+
+pdf_output = pdf.output(dest='S').encode('latin-1')
+pdf_buffer = io.BytesIO(pdf_output)
+
+st.download_button(
+    label="Download Sample PDF",
+    data=pdf_buffer,
+    file_name="Sample_FabFlow_Product.pdf",
+    mime="application/pdf"
+)
+
 
 # --- 1. PDF CLASS (UTF-8, Bougie Font) ---
 class DigitalProduct(FPDF):
